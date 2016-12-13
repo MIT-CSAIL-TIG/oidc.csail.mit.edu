@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>openid-connect-overlay-parent</artifactId>
-    <groupId>edu.mit.oidc</groupId>
+    <groupId>edu.csail.mit.oidc</groupId>
     <version>1.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>oidc-mit-overlay</artifactId>
+  <artifactId>oidc-csail-overlay</artifactId>
   <packaging>war</packaging>
-  <name>Overlay for oidc.mit.edu web server</name>
+  <name>Overlay for oidc.csail.mit.edu web server</name>
   <build>
     <plugins>
       <plugin>
@@ -49,7 +49,7 @@
       <dependency>
       	<groupId>org.springframework.security.kerberos</groupId>
       	<artifactId>spring-security-kerberos-core</artifactId>
-      	<version>1.0.0.CI-SNAPSHOT</version>
+      	<version>1.0.1.RELEASE</version>
         <exclusions>
          <exclusion>
          <groupId>org.springframework</groupId>
