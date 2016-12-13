@@ -44,7 +44,7 @@
 	
 	<!-- LDAP -->
 	
-	<security:ldap-server url="ldaps://ldap-too.mit.edu/ou=users,ou=moira,dc=mit,dc=edu" />
+	<security:ldap-server url="ldaps://ldap-slave.csail.mit.edu/ou=people,dc=csail,dc=mit,dc=edu" />
 
 	<bean id="ldapAuthProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
 		<constructor-arg>
@@ -63,8 +63,8 @@
 	</bean>
 
    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
-		<property name="url" value="ldaps://ldap-too.mit.edu" />
-		<property name="base" value="ou=users,ou=moira,dc=mit,dc=edu" />
+		<property name="url" value="ldaps://ldap-slave.csail.mit.edu" />
+		<property name="base" value="ou=people,dc=csail,dc=mit,dc=edu" />
    </bean>
    
 	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
@@ -100,10 +100,10 @@
             class="org.springframework.security.extensions.kerberos.KerberosServiceAuthenticationProvider">
             <property name="ticketValidator">
                     <bean class="org.springframework.security.extensions.kerberos.SunJaasKerberosTicketValidator">
-                            <property name="servicePrincipal" value="HTTP/oidc.mit.edu@ATHENA.MIT.EDU" />
+                            <property name="servicePrincipal" value="HTTP/oidc.csail.mit.edu@CSAIL.MIT.EDU" />
                             <!-- Setting keyTabLocation to a classpath resource will most likely not work in a Java EE application Server -->
                             <!-- See the Javadoc for more information on that -->
-                            <property name="keyTabLocation" value="file:/etc/httpd/krb5.keytab" />
+                            <property name="keyTabLocation" value="file:/etc/krb5.keytab" />
                             <property name="debug" value="true" />
                     </bean>
             </property>
@@ -124,7 +124,7 @@
 					</constructor-arg>
 					<constructor-arg>
 						<list>
-							<value>ATHENA.MIT.EDU</value>
+							<value>CSAIL.MIT.EDU</value>
 						</list>
 					</constructor-arg>
             	</bean>
@@ -153,7 +153,7 @@
 		</constructor-arg>
 		<constructor-arg>
 			<list>
-				<value>MIT.EDU</value>
+				<value>CSAIL.MIT.EDU</value>
 			</list>
 		</constructor-arg>		
 	</bean>
