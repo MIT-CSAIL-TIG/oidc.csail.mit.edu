@@ -32,9 +32,9 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
 	<bean id="configBean" class="org.mitre.openid.connect.config.ConfigurationPropertiesBean">
-		<property name="issuer" value="https://oidc.mit.edu/" />
+		<property name="issuer" value="https://oidc-dev.csail.mit.edu/" />
  		<property name="logoImageUrl" value="resources/images/mit-logo-small.png" />
- 		<property name="topbarTitle" value="MIT OpenID Connect Pilot" />
+ 		<property name="topbarTitle" value="MIT CSAIL OpenID Connect Pilot" />
 	</bean>
 	
 </beans>
