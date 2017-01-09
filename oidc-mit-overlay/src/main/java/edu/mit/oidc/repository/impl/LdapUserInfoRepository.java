@@ -137,17 +137,6 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	}
 
 	@Override
-	public Collection<? extends UserInfo> getAll() {
-		return Collections.emptySet();
-	}
-
-	@Override
-	public UserInfo getBySubject(String sub) {
-		//return getByUsername(sub);
-		throw new NotImplementedException("Unable to search by subject in this repostory.");
-	}
-
-	@Override
 	public UserInfo getByUsername(String username) {
 		try {
 			UserInfo ui = cache.get(username);
@@ -159,16 +148,13 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.mitre.openid.connect.repository.UserInfoRepository#getByEmailAddress(java.lang.String)
+	 */
 	@Override
-	public void remove(UserInfo userInfo) {
-		// read-only repository, unimplemented
-
-	}
-
-	@Override
-	public UserInfo save(UserInfo userInfo) {
-		// read-only repository, unimplemented no-op
-		return userInfo;
+	public UserInfo getByEmailAddress(String email) {
+		// TODO Auto-generated method stub
+		throw new NotImplementedException("Unable to search by email in this repostory.");		
 	}
 
 }
