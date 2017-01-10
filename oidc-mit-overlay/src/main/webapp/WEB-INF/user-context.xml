@@ -78,6 +78,10 @@
 
 	<security:http pattern="/login**" use-expressions="true" entry-point-ref="http403EntryPoint">
 		<security:intercept-url pattern="/login**" access="permitAll"/>	
+		<security:headers>
+			<security:frame-options policy="DENY" />
+		</security:headers>
+		<security:csrf />
 	</security:http>
 
 
