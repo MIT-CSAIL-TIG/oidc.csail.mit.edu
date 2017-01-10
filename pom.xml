@@ -16,7 +16,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.security.kerberos</groupId>
-				<artifactId>spring-security-kerberos-core</artifactId>
+				<artifactId>spring-security-kerberos-web</artifactId>
 				<version>1.0.1.RELEASE</version>
 			</dependency>
 			<dependency>

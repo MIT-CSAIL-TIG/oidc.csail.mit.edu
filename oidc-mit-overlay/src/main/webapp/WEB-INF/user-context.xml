@@ -31,7 +31,6 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
-
 	<import resource="file:/etc/mitreid-connect/admins.xml" />
 
 	<security:authentication-manager alias="authenticationManager">
@@ -89,16 +88,16 @@
 		<security:custom-filter ref="spnegoAuthenticationProcessingFilter" position="BASIC_AUTH_FILTER" />
 	</security:http>
 
-    <bean id="spnegoEntryPoint" class="org.springframework.security.extensions.kerberos.web.SpnegoEntryPoint" />
+    <bean id="spnegoEntryPoint" class="org.springframework.security.kerberos.web.authentication.SpnegoEntryPoint" />
 
-    <bean id="spnegoAuthenticationProcessingFilter" class="org.springframework.security.extensions.kerberos.web.SpnegoAuthenticationProcessingFilter">
+    <bean id="spnegoAuthenticationProcessingFilter" class="org.springframework.security.kerberos.web.authentication.SpnegoAuthenticationProcessingFilter">
             <property name="authenticationManager" ref="authenticationManager" />
     </bean>
 
     <bean id="kerberosServiceAuthenticationProvider"
-            class="org.springframework.security.extensions.kerberos.KerberosServiceAuthenticationProvider">
+            class="org.springframework.security.kerberos.authentication.KerberosServiceAuthenticationProvider">
             <property name="ticketValidator">
-                    <bean class="org.springframework.security.extensions.kerberos.SunJaasKerberosTicketValidator">
+                    <bean class="org.springframework.security.kerberos.authentication.sun.SunJaasKerberosTicketValidator">
                             <property name="servicePrincipal" value="oidc/oidc-dev.csail.mit.edu@CSAIL.MIT.EDU" />
                             <!-- Setting keyTabLocation to a classpath resource will most likely not work in a Java EE application Server -->
                             <!-- See the Javadoc for more information on that -->
@@ -160,7 +159,7 @@
 
     <!-- This bean definition enables a very detailed Kerberos logging -->
     <bean
-            class="org.springframework.security.extensions.kerberos.GlobalSunJaasKerberosConfig">
+            class="org.springframework.security.kerberos.authentication.sun.GlobalSunJaasKerberosConfig">
             <property name="debug" value="true" />
             <property name="krbConfLocation" value="file:/etc/krb5.conf"/>
     </bean>
