@@ -52,6 +52,7 @@ $(document).ready(function() {
          	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password">
          </div>
         </div>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <div><input type="submit" class="btn btn-inverse" value="Log In" name="submit"></div>
 	   </form>
       </div>
