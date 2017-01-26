@@ -89,7 +89,7 @@
                             <property name="servicePrincipal" value="HTTP/oidc-dev.csail.mit.edu@CSAIL.MIT.EDU" />
                             <!-- Setting keyTabLocation to a classpath resource will most likely not work in a Java EE application Server -->
                             <!-- See the Javadoc for more information on that -->
-                            <property name="keyTabLocation" value="/etc/oidc.keytab" />
+                            <property name="keyTabLocation" value="file:/etc/oidc.keytab" />
                             <property name="debug" value="true" />
                     </bean>
             </property>
