@@ -71,7 +71,7 @@
 
 	<!-- Kerberos -->
 	
-	<security:http pattern="/kerberos_login**" use-expressions="true" entry-point-ref="spnegoEntryPoint">
+	<security:http pattern="/kerberos_login**" use-expressions="true" entry-point-ref="spnegoEntryPoint" authentication-manager-ref="authenticationManager">
 		<security:intercept-url pattern="/kerberos_login**" access="isAuthenticated()" />
 		<security:custom-filter ref="spnegoAuthenticationProcessingFilter" position="BASIC_AUTH_FILTER" />
 	</security:http>
@@ -162,7 +162,7 @@
             <property name="krbConfLocation" value="file:/etc/krb5.conf"/>
     </bean>
 
-	<security:http disable-url-rewriting="true" use-expressions="true"> 
+	<security:http disable-url-rewriting="true" use-expressions="true" authentication-manager-ref="authenticationManager"> 
 		<security:form-login login-page="/login" authentication-failure-url="/login?error=failure" authentication-success-handler-ref="authenticationTimeStamper" />
 		<security:intercept-url pattern="/authorize" access="hasRole('ROLE_USER')" />
 		<security:intercept-url pattern="/**" access="permitAll" />
