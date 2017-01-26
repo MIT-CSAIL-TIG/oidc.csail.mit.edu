@@ -42,11 +42,11 @@
 	
 	<!-- LDAP -->
 	
-	<security:ldap-server url="ldaps://ldap-slave.csail.mit.edu/ou=users,ou=people,dc=csail,dc=mit,dc=edu" />
+	<security:ldap-server url="ldaps://ldap-slave.csail.mit.edu/ou=people,dc=csail,dc=mit,dc=edu" />
 
    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
 		<property name="url" value="ldaps://ldap-slave.csail.mit.edu" />
-		<property name="base" value="ou=users,ou=people,dc=csail,dc=mit,dc=edu" />
+		<property name="base" value="ou=people,dc=csail,dc=mit,dc=edu" />
    </bean>
    
 	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
