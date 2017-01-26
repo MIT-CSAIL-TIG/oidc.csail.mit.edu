@@ -159,7 +159,7 @@
     <bean
             class="org.springframework.security.kerberos.authentication.sun.GlobalSunJaasKerberosConfig">
             <property name="debug" value="true" />
-            <property name="krbConfLocation" value="file:/etc/krb5.conf"/>
+            <property name="krbConfLocation" value="/etc/krb5.conf"/>
     </bean>
 
 	<security:http disable-url-rewriting="true" use-expressions="true" authentication-manager-ref="authenticationManager"> 
