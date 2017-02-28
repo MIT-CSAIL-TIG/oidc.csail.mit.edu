@@ -69,6 +69,8 @@
 	<bean id="ldapGroupInfoRepository" class="edu.mit.oidc.repository.impl.LdapGroupInfoRepository">
 		<property name="ldapTemplate" ref="groupLdapTemplate" />
 	</bean>
+
+	<bean id="groupScopeClaimsTranslationService" primary="true" class="edu.mit.oidc.service.impl.GroupedScopeClaimTranslationService" />
 		
 	<mvc:view-controller path="/login" view-name="login" />
 

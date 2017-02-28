@@ -14,6 +14,8 @@ import com.google.gson.JsonPrimitive;
  */
 public class GroupedUserInfo extends DefaultUserInfo {
 
+	private static final long serialVersionUID = -2074183032101831440L;
+
 	private List<String> groups;
 
 	/**
@@ -45,9 +47,5 @@ public class GroupedUserInfo extends DefaultUserInfo {
 		
 		return base;
 	}
-	
-
-	
-	
 	
 }
