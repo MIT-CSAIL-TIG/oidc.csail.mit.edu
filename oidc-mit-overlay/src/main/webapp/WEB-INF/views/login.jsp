@@ -6,13 +6,11 @@
 <%@ taglib prefix="o" tagdir="/WEB-INF/tags"%>
 <%
 
-String url = "/";
-
 SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);
 
 if (savedRequest != null) {
-	url = UriUtils.encodeQueryParam(savedRequest.getRedirectUrl(), "UTF-8");
-}				
+	session.setAttribute("LOGIN_REDIRECT", savedRequest.getRedirectUrl());
+}
 				
 %>
 <o:header title="Log In" />
@@ -59,12 +57,12 @@ $(document).ready(function() {
    
 	<div class="span4 well">
 		<h2>Log in with Kerberos</h2>
-		<div><a href="kerberos_login?target=<%= url %>" class="btn btn-inverse">Use Existing Kerberos Tickets</a></div>
+		<div><a href="kerberos_login" class="btn btn-inverse">Use Existing Kerberos Tickets</a></div>
 	</div>
 
 	<div class="span4 well">
 		<h2>Log in with Certificate</h2>
-		<div><a href="cert_login?target=<%= url %>" class="btn btn-inverse">Use MIT Certificate</a></div>
+		<div><a href="cert_login" class="btn btn-inverse">Use MIT Certificate</a></div>
 	</div>
 
 </div>
