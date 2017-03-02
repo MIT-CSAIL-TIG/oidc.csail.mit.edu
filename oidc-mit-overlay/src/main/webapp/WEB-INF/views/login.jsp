@@ -43,7 +43,7 @@ $(document).ready(function() {
          <div class="input-prepend input-append input-block-level">
          	<span class="add-on"><i class="icon-user"></i></span>
          	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="j_username">
-         	<span class="add-on">@mit.edu</span>
+         	<span class="add-on">@csail.mit.edu</span>
          	</div>
         </div>
         <div>
