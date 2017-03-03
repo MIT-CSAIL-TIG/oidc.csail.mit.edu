@@ -26,10 +26,20 @@ $(document).ready(function() {
 <o:topbar />
 <div class="container-fluid main">
 
-	<h1>Log In</h1>
+	<h1><spring:message code="login.login_with_username_and_password"/></h1>
 
 	<c:if test="${ param.error != null }">
-		<div class="alert alert-error">The system was unable to log you in. Please try again.</div>
+		<c:choose>
+			<c:when test="${ param.error == "kerberos" }">
+				<div class="alert alert-error"><spring:message code="login.error_kerberos"/></div>
+			</c:when>
+			<c:when test="${ param.error == "cert" }">
+				<div class="alert alert-error"><spring:message code="login.error_cert"/></div>
+			</c:when>
+			<c:otherwise>
+				<div class="alert alert-error"><spring:message code="login.error"/></div>	
+			</c:otherwise>
+		</c:choose>				
 	</c:if>
 
 
