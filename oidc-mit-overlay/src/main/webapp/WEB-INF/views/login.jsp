@@ -30,10 +30,10 @@ $(document).ready(function() {
 
 	<c:if test="${ param.error != null }">
 		<c:choose>
-			<c:when test="${ param.error == "kerberos" }">
+			<c:when test="${ param.error == 'kerberos' }">
 				<div class="alert alert-error"><spring:message code="login.error_kerberos"/></div>
 			</c:when>
-			<c:when test="${ param.error == "cert" }">
+			<c:when test="${ param.error == 'cert' }">
 				<div class="alert alert-error"><spring:message code="login.error_cert"/></div>
 			</c:when>
 			<c:otherwise>
