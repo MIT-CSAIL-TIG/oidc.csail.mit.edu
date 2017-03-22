@@ -2,26 +2,21 @@ package edu.mit.oidc.repository.impl;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import javax.el.MethodNotFoundException;
 import javax.naming.NamingException;
-import javax.naming.OperationNotSupportedException;
 import javax.naming.directory.Attributes;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.NotImplementedException;
-import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.repository.UserInfoRepository;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -168,7 +163,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	@Override
 	public UserInfo getByEmailAddress(String email) {
 		// TODO Auto-generated method stub
-		throw new NotImplementedException("Unable to search by email in this repostory.");		
+		throw new MethodNotFoundException("Unable to search by email in this repostory.");		
 	}
 
 }
