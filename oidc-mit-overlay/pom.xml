@@ -8,7 +8,7 @@
   </parent>
   <artifactId>oidc-mit-overlay</artifactId>
   <packaging>war</packaging>
-  <name>Overlay for oidc.mit.edu web server</name>
+  <name>Overlay for CSAIL OIDC server</name>
   <build>
     <plugins>
       <plugin>
@@ -30,12 +30,33 @@
               <artifactId>openid-connect-server-webapp</artifactId>
               <excludes>
               	<exclude>WEB-INF/classes/keystore.jwks</exclude>
+              	<exclude>resources/bootstrap2/css/</exclude>
               </excludes>
             </overlay>
           </overlays>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
+		<plugin>
+			<groupId>org.lesscss</groupId>
+			<artifactId>lesscss-maven-plugin</artifactId>
+			<configuration>
+				<sourceDirectory>${project.basedir}/src/main/less</sourceDirectory>
+				<outputDirectory>${project.build.directory}/${project.build.finalName}/resources/bootstrap2/css</outputDirectory>
+				<compress>false</compress>
+				<includes>
+					<include>bootstrap.less</include>
+					<include>bootstrap-responsive.less</include>
+				</includes>
+			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<goal>compile</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
    </build>
    <dependencies>
@@ -47,6 +68,10 @@
       <dependency>
       	<groupId>org.mitre</groupId>
        	<artifactId>openid-connect-common</artifactId>
+      </dependency>
+      <dependency>
+      	<groupId>org.mitre</groupId>
+       	<artifactId>openid-connect-server</artifactId>
       </dependency>
       <dependency>
       	<groupId>org.springframework.security.kerberos</groupId>
@@ -62,6 +87,16 @@
     	<groupId>org.springframework.security</groupId>
     	<artifactId>spring-security-ldap</artifactId>
       </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
           <dependency>
           	<groupId>mysql</groupId>

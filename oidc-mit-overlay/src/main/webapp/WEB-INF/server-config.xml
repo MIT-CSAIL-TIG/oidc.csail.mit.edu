@@ -35,6 +35,12 @@
 		<property name="issuer" value="https://oidc-dev.csail.mit.edu/" />
  		<property name="logoImageUrl" value="resources/images/mit-logo-small.png" />
  		<property name="topbarTitle" value="MIT CSAIL OpenID Connect Pilot" />
+		<property name="languageNamespaces">
+			<list>
+				<value>csail</value>
+				<value>messages</value>
+			</list>
+		</property>
 	</bean>
 	
 </beans>

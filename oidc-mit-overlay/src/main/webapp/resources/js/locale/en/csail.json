@@ -1,0 +1,8 @@
+{
+	"login": {
+		"login_with_username_and_password": "Log In with your CSAIL account",
+		"error": "The system was unable to log you in. Please try again or select a different method.",
+		"error_kerberos": "The system was unable to validate your Kerberos credentials. Please try again or select a different method.",
+		"error_cert": "The system was unable to validate your certificate. Please try again or select a different method."
+	}
+}

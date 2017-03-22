@@ -28,9 +28,13 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
+import edu.mit.oidc.model.GroupedUserInfo;
+
 public class LdapUserInfoRepository implements UserInfoRepository {
 
 	private LdapTemplate ldapTemplate;
+	private LdapGroupInfoRepository groupRepository;
+	
 	private MessageDigest digest;
 	
 	// result cache
@@ -44,7 +48,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 				return null; // we can't go on if there's no UID
 			}
 			
-			UserInfo ui = new DefaultUserInfo();
+			UserInfo ui = new GroupedUserInfo();
 
 			// save the UID as the preferred username
 			ui.setPreferredUsername(attr.get("uid").get().toString());
@@ -99,12 +103,22 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public UserInfo load(String username) throws Exception {
 			Filter find = new EqualsFilter("uid", username);
-			List res = ldapTemplate.search("", find.encode(), attributesMapper);
+			List<GroupedUserInfo> res = ldapTemplate.search("", find.encode(), attributesMapper);
 			
 			if (res.isEmpty()) {
 				throw new IllegalArgumentException("Unable to load uid: " + username);
 			} else if (res.size() == 1) {
-				return (UserInfo) res.get(0);
+				
+				GroupedUserInfo userInfo = (GroupedUserInfo) res.get(0);
+				
+				List<String> groups = groupRepository.getGroupsForUsername(username);
+
+				if (groups != null && !groups.isEmpty()) {
+					userInfo.setGroups(groups);
+				}
+				
+				return userInfo;
+				
 			} else {
 				throw new IllegalArgumentException("Unable to load uid: " + username);
 			}
