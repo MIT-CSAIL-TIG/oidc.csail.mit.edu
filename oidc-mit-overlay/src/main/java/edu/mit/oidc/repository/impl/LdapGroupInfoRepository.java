@@ -59,7 +59,7 @@ public class LdapGroupInfoRepository {
 	private AttributesMapper attributesMapper = new AttributesMapper() {
 		@Override
 		public Object mapFromAttributes(Attributes attr) throws NamingException {
-			return attr.get("cn");
+			return attr.get("cn").toString();
 		}
 	};
 	
