@@ -33,7 +33,7 @@
 
 	<import resource="file:/etc/mitreid-connect/admins.xml" />
 
-	<security:authentication-manager alias="authenticationManager">
+	<security:authentication-manager id="authenticationManager">
 		<security:authentication-provider ref="kerberosAuthenticationProvider" />
         <security:authentication-provider ref="kerberosServiceAuthenticationProvider" /> <!-- Used with SPNEGO -->
 	</security:authentication-manager>
