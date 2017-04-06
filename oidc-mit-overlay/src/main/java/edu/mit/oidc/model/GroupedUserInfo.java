@@ -40,8 +40,10 @@ public class GroupedUserInfo extends DefaultUserInfo {
 		JsonObject base = super.toJson();
 		
 		JsonArray grp = new JsonArray();
-		for (String group : groups) {
-			grp.add(new JsonPrimitive(group));
+		if (groups != null) {
+			for (String group : groups) {
+				grp.add(new JsonPrimitive(group));
+			}
 		}
 		base.add("groups", grp);
 		
