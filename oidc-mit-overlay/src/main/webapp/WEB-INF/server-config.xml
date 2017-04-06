@@ -31,16 +31,5 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<bean id="configBean" class="org.mitre.openid.connect.config.ConfigurationPropertiesBean">
-		<property name="issuer" value="https://oidc-dev.csail.mit.edu/" />
- 		<property name="logoImageUrl" value="resources/images/mit-logo-small.png" />
- 		<property name="topbarTitle" value="MIT CSAIL OpenID Connect Pilot" />
-		<property name="languageNamespaces">
-			<list>
-				<value>csail</value>
-				<value>messages</value>
-			</list>
-		</property>
-	</bean>
-	
+    <import resource="file:/etc/mitreid-connect/server-config.xml" />
 </beans>
