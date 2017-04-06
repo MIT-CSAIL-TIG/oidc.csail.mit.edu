@@ -59,7 +59,7 @@
    </bean>
    
 	<bean id="groupLdapTemplate" class="org.springframework.ldap.core.LdapTemplate">
-		<constructor-arg name="contextSource" ref="contextSource" />
+		<constructor-arg name="contextSource" ref="groupContextSource" />
 	</bean>
 
 	<bean id="ldapUserInfoRepository" primary="true" class="edu.mit.oidc.repository.impl.LdapUserInfoRepository">
