@@ -6,13 +6,11 @@
 <%@ taglib prefix="o" tagdir="/WEB-INF/tags"%>
 <%
 
-String url = "/";
-
 SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);
 
 if (savedRequest != null) {
-	url = UriUtils.encodeQueryParam(savedRequest.getRedirectUrl(), "UTF-8");
-}				
+	session.setAttribute("LOGIN_REDIRECT", savedRequest.getRedirectUrl());
+}
 				
 %>
 <o:header title="Log In" />
@@ -28,28 +26,38 @@ $(document).ready(function() {
 <o:topbar />
 <div class="container-fluid main">
 
-	<h1>Log In</h1>
+	<h1><spring:message code="login.login_with_username_and_password"/></h1>
 
 	<c:if test="${ param.error != null }">
-		<div class="alert alert-error">The system was unable to log you in. Please try again.</div>
+		<c:choose>
+			<c:when test="${ param.error == 'kerberos' }">
+				<div class="alert alert-error"><spring:message code="login.error_kerberos"/></div>
+			</c:when>
+			<c:when test="${ param.error == 'cert' }">
+				<div class="alert alert-error"><spring:message code="login.error_cert"/></div>
+			</c:when>
+			<c:otherwise>
+				<div class="alert alert-error"><spring:message code="login.error"/></div>	
+			</c:otherwise>
+		</c:choose>				
 	</c:if>
 
 
 <div class="row-fluid">
       <div class="span4 well">
        <h2>Log in with Kerberos username and password</h2>
-	   <form action="<%=request.getContextPath()%>/j_spring_security_check" method="POST">
+	   <form action="<%=request.getContextPath()%>/login" method="POST">
 	   	<div>
          <div class="input-prepend input-append input-block-level">
          	<span class="add-on"><i class="icon-user"></i></span>
-         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="j_username">
-         	<span class="add-on">@mit.edu</span>
+         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="username">
+         	<span class="add-on">@csail.mit.edu</span>
          	</div>
         </div>
         <div>
          <div class="input-prepend input-block-level">
          	<span class="add-on"><i class="icon-lock"></i></span>
-         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password">
+         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="password">
          </div>
         </div>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -59,12 +67,12 @@ $(document).ready(function() {
    
 	<div class="span4 well">
 		<h2>Log in with Kerberos</h2>
-		<div><a href="kerberos_login?target=<%= url %>" class="btn btn-inverse">Use Existing Kerberos Tickets</a></div>
+		<div><a href="kerberos_login" class="btn btn-inverse">Use Existing Kerberos Tickets</a></div>
 	</div>
 
 	<div class="span4 well">
 		<h2>Log in with Certificate</h2>
-		<div><a href="cert_login?target=<%= url %>" class="btn btn-inverse">Use MIT Certificate</a></div>
+		<div><a href="cert_login" class="btn btn-inverse">Use MIT Certificate</a></div>
 	</div>
 
 </div>

@@ -24,16 +24,16 @@
 	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<import resource="file:/etc/mitreid-connect/admins.xml" />
 
-	<security:authentication-manager alias="authenticationManager">
+	<security:authentication-manager id="authenticationManager">
 		<security:authentication-provider ref="kerberosAuthenticationProvider" />
         <security:authentication-provider ref="kerberosServiceAuthenticationProvider" /> <!-- Used with SPNEGO -->
 	</security:authentication-manager>
@@ -52,11 +52,26 @@
 	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
 		<constructor-arg name="contextSource" ref="contextSource" />
 	</bean>
+	
+   <bean id="groupContextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="ldaps://ldap-slave.csail.mit.edu" />
+		<property name="base" value="ou=groups,dc=csail,dc=mit,dc=edu" />
+   </bean>
+   
+	<bean id="groupLdapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<constructor-arg name="contextSource" ref="groupContextSource" />
+	</bean>
 
 	<bean id="ldapUserInfoRepository" primary="true" class="edu.mit.oidc.repository.impl.LdapUserInfoRepository">
 		<property name="ldapTemplate" ref="ldapTemplate" />
+		<property name="groupRepository" ref="ldapGroupInfoRepository" />
 	</bean>
 
+	<bean id="ldapGroupInfoRepository" class="edu.mit.oidc.repository.impl.LdapGroupInfoRepository">
+		<property name="ldapTemplate" ref="groupLdapTemplate" />
+	</bean>
+
+	<bean id="groupScopeClaimsTranslationService" primary="true" class="edu.mit.oidc.service.impl.GroupedScopeClaimTranslationService" />
 		
 	<mvc:view-controller path="/login" view-name="login" />
 
@@ -80,6 +95,11 @@
 
     <bean id="spnegoAuthenticationProcessingFilter" class="org.springframework.security.kerberos.web.authentication.SpnegoAuthenticationProcessingFilter">
             <property name="authenticationManager" ref="authenticationManager" />
+            <property name="failureHandler">
+            	<bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+            		<property name="defaultFailureUrl" value="/login.jsp?error=kerberos"></property>
+            	</bean>
+            </property>
     </bean>
 
     <bean id="kerberosServiceAuthenticationProvider"
@@ -130,8 +150,17 @@
     <!-- X509 Login -->
 
 	<security:http pattern="/cert_login**" use-expressions="true">
-		<security:x509 subject-principal-regex="EMAILADDRESS=(.*?)," user-service-ref="certUserService" />
+		<security:x509 subject-principal-regex="" user-service-ref="certUserService" />
 	</security:http>
+	
+<!-- 	<bean class="org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter" id="certFilter"> -->
+<!-- 		<property name="principalExtractor"> -->
+<!-- 			<bean class="org.springframework.security.web.authentication.preauth.x509.SubjectDnX509PrincipalExtractor"> -->
+<!-- 				<property name="subjectDnRegex" value="EMAILADDRESS=(.*?)," /> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 		<property name=""></property> -->
+<!-- 	</bean> -->
 	
 	<bean class="edu.mit.oidc.userdetails.UsernamePrefixKerberosLdapUserDetailsService" id="certUserService">
 		<constructor-arg>

@@ -2,35 +2,37 @@ package edu.mit.oidc.repository.impl;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import javax.el.MethodNotFoundException;
 import javax.naming.NamingException;
-import javax.naming.OperationNotSupportedException;
 import javax.naming.directory.Attributes;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang.NotImplementedException;
-import org.mitre.openid.connect.model.DefaultUserInfo;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.repository.UserInfoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 
+import edu.mit.oidc.model.GroupedUserInfo;
+
 public class LdapUserInfoRepository implements UserInfoRepository {
 
 	private LdapTemplate ldapTemplate;
+	
+	@Autowired
+	private LdapGroupInfoRepository groupRepository;
+	
 	private MessageDigest digest;
 	
 	// result cache
@@ -44,7 +46,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 				return null; // we can't go on if there's no UID
 			}
 			
-			UserInfo ui = new DefaultUserInfo();
+			UserInfo ui = new GroupedUserInfo();
 
 			// save the UID as the preferred username
 			ui.setPreferredUsername(attr.get("uid").get().toString());
@@ -99,12 +101,22 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 		@Override
 		public UserInfo load(String username) throws Exception {
 			Filter find = new EqualsFilter("uid", username);
-			List res = ldapTemplate.search("", find.encode(), attributesMapper);
+			List<GroupedUserInfo> res = ldapTemplate.search("", find.encode(), attributesMapper);
 			
 			if (res.isEmpty()) {
 				throw new IllegalArgumentException("Unable to load uid: " + username);
 			} else if (res.size() == 1) {
-				return (UserInfo) res.get(0);
+				
+				GroupedUserInfo userInfo = (GroupedUserInfo) res.get(0);
+				
+				List<String> groups = getGroupRepository().getGroupsForUsername(username);
+
+				if (groups != null && !groups.isEmpty()) {
+					userInfo.setGroups(groups);
+				}
+				
+				return userInfo;
+				
 			} else {
 				throw new IllegalArgumentException("Unable to load uid: " + username);
 			}
@@ -154,7 +166,21 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	@Override
 	public UserInfo getByEmailAddress(String email) {
 		// TODO Auto-generated method stub
-		throw new NotImplementedException("Unable to search by email in this repostory.");		
+		throw new MethodNotFoundException("Unable to search by email in this repostory.");		
+	}
+
+	/**
+	 * @return the groupRepository
+	 */
+	public LdapGroupInfoRepository getGroupRepository() {
+		return groupRepository;
+	}
+
+	/**
+	 * @param groupRepository the groupRepository to set
+	 */
+	public void setGroupRepository(LdapGroupInfoRepository groupRepository) {
+		this.groupRepository = groupRepository;
 	}
 
 }

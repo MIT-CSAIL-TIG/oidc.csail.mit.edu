@@ -3,12 +3,12 @@
   <parent>
     <artifactId>openid-connect-overlay-parent</artifactId>
     <groupId>edu.mit.oidc</groupId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>oidc-mit-overlay</artifactId>
   <packaging>war</packaging>
-  <name>Overlay for oidc.mit.edu web server</name>
+  <name>Overlay for CSAIL OIDC server</name>
   <build>
     <plugins>
       <plugin>
@@ -30,12 +30,31 @@
               <artifactId>openid-connect-server-webapp</artifactId>
               <excludes>
               	<exclude>WEB-INF/classes/keystore.jwks</exclude>
+              	<exclude>resources/bootstrap2/css/</exclude>
               </excludes>
             </overlay>
           </overlays>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
+		<plugin>
+			<groupId>ro.isdc.wro4j</groupId>
+			<artifactId>wro4j-maven-plugin</artifactId>
+			<configuration>
+				<targetGroups>bootstrap,bootstrap-responsive</targetGroups>
+				<destinationFolder>${project.build.directory}/${project.build.finalName}</destinationFolder>
+				<cssDestinationFolder>${project.build.directory}/${project.build.finalName}/resources/bootstrap2/css/</cssDestinationFolder>
+				<jsDestinationFolder>${project.build.directory}/${project.build.finalName}/js/</jsDestinationFolder>
+				<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+			</configuration>
+			<dependencies>
+			  <dependency>
+			    <groupId>ro.isdc.wro4j</groupId>
+			    <artifactId>wro4j-extensions</artifactId>
+			    <version>1.8.0</version>
+			  </dependency>
+			</dependencies>
+		</plugin>
     </plugins>
    </build>
    <dependencies>
@@ -47,6 +66,10 @@
       <dependency>
       	<groupId>org.mitre</groupId>
        	<artifactId>openid-connect-common</artifactId>
+      </dependency>
+      <dependency>
+      	<groupId>org.mitre</groupId>
+       	<artifactId>openid-connect-server</artifactId>
       </dependency>
       <dependency>
       	<groupId>org.springframework.security.kerberos</groupId>
@@ -62,6 +85,16 @@
     	<groupId>org.springframework.security</groupId>
     	<artifactId>spring-security-ldap</artifactId>
       </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
           <dependency>
           	<groupId>mysql</groupId>
