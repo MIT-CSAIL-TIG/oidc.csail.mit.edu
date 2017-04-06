@@ -13,6 +13,7 @@ import javax.naming.directory.Attributes;
 import org.apache.commons.codec.binary.Hex;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.repository.UserInfoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
@@ -28,6 +29,8 @@ import edu.mit.oidc.model.GroupedUserInfo;
 public class LdapUserInfoRepository implements UserInfoRepository {
 
 	private LdapTemplate ldapTemplate;
+	
+	@Autowired
 	private LdapGroupInfoRepository groupRepository;
 	
 	private MessageDigest digest;
@@ -106,7 +109,7 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 				
 				GroupedUserInfo userInfo = (GroupedUserInfo) res.get(0);
 				
-				List<String> groups = groupRepository.getGroupsForUsername(username);
+				List<String> groups = getGroupRepository().getGroupsForUsername(username);
 
 				if (groups != null && !groups.isEmpty()) {
 					userInfo.setGroups(groups);
@@ -164,6 +167,20 @@ public class LdapUserInfoRepository implements UserInfoRepository {
 	public UserInfo getByEmailAddress(String email) {
 		// TODO Auto-generated method stub
 		throw new MethodNotFoundException("Unable to search by email in this repostory.");		
+	}
+
+	/**
+	 * @return the groupRepository
+	 */
+	public LdapGroupInfoRepository getGroupRepository() {
+		return groupRepository;
+	}
+
+	/**
+	 * @param groupRepository the groupRepository to set
+	 */
+	public void setGroupRepository(LdapGroupInfoRepository groupRepository) {
+		this.groupRepository = groupRepository;
 	}
 
 }

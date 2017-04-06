@@ -64,6 +64,7 @@
 
 	<bean id="ldapUserInfoRepository" primary="true" class="edu.mit.oidc.repository.impl.LdapUserInfoRepository">
 		<property name="ldapTemplate" ref="ldapTemplate" />
+		<property name="groupRepository" ref="ldapGroupInfoRepository" />
 	</bean>
 
 	<bean id="ldapGroupInfoRepository" class="edu.mit.oidc.repository.impl.LdapGroupInfoRepository">
