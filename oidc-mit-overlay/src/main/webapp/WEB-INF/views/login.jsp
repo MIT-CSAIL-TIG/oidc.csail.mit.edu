@@ -46,7 +46,7 @@ $(document).ready(function() {
 <div class="row-fluid">
       <div class="span4 well">
        <h2>Log in with Kerberos username and password</h2>
-	   <form action="<%=request.getContextPath()%>/j_spring_security_check" method="POST">
+	   <form action="<%=request.getContextPath()%>/login" method="POST">
 	   	<div>
          <div class="input-prepend input-append input-block-level">
          	<span class="add-on"><i class="icon-user"></i></span>
