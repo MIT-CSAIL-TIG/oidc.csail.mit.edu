@@ -50,14 +50,14 @@ $(document).ready(function() {
 	   	<div>
          <div class="input-prepend input-append input-block-level">
          	<span class="add-on"><i class="icon-user"></i></span>
-         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="j_username">
+         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="username">
          	<span class="add-on">@csail.mit.edu</span>
          	</div>
         </div>
         <div>
          <div class="input-prepend input-block-level">
          	<span class="add-on"><i class="icon-lock"></i></span>
-         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="j_password">
+         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="password">
          </div>
         </div>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
