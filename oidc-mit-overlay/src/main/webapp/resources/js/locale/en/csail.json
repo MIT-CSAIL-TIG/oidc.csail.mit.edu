@@ -1,8 +1,13 @@
 {
 	"login": {
-		"login_with_username_and_password": "Log In with your CSAIL account",
+		"login_with_username_and_password": "Log in with your CSAIL account",
 		"error": "The system was unable to log you in. Please try again or select a different method.",
 		"error_kerberos": "The system was unable to validate your Kerberos credentials. Please try again or select a different method.",
-		"error_cert": "The system was unable to validate your certificate. Please try again or select a different method."
+		"error_cert": "The system was unable to validate your certificate. Please try again or select a different method.",
+		"username_address_space": "@csail.mit.edu",
+		"use_kerberos": "Log in with Kerberos",
+		"kerberos_button": "Use Existing Kerberos Tickets",
+		"use_cert": "Log in with Certificate",
+		"cert_button": "Use CSAIL Certificate"		
 	}
 }
