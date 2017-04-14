@@ -19,15 +19,14 @@ if (savedRequest != null) {
 <!--
 
 $(document).ready(function() {
-	$('#j_username').focus();
+	// select the appropriate field based on context
+	$('#<c:out value="${ login_hint != null ? 'j_password' : 'j_username' }" />').focus();
 });
 
 //-->
 </script>
 <o:topbar />
 <div class="container-fluid main">
-
-	<h1><spring:message code="login.login_with_username_and_password"/></h1>
 
 	<c:if test="${ param.error != null }">
 		<c:choose>
@@ -46,34 +45,34 @@ $(document).ready(function() {
 
 <div class="row-fluid">
       <div class="span4 well">
-       <h2>Log in with Kerberos username and password</h2>
+       <h2><spring:message code="login.login_with_username_and_password"/></h2>
 	   <form action="<%=request.getContextPath()%>/login" method="POST">
 	   	<div>
          <div class="input-prepend input-append input-block-level">
          	<span class="add-on"><i class="icon-user"></i></span>
-         	<input type="text" placeholder="Username" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="" id="j_username" name="username">
-         	<span class="add-on">@csail.mit.edu</span>
+         	<input type="text" placeholder="<spring:message code="login.username"/>" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" value="<c:out value="${ login_hint }" />" id="j_username" name="username">
+         	<span class="add-on"><spring:message code="login.username_address_space"/></span>
          	</div>
         </div>
         <div>
          <div class="input-prepend input-block-level">
          	<span class="add-on"><i class="icon-lock"></i></span>
-         	<input type="password" placeholder="Password" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="password">
+         	<input type="password" placeholder="<spring:message code="login.password"/>" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false" id="j_password" name="password">
          </div>
         </div>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-        <div><input type="submit" class="btn btn-inverse" value="Log In" name="submit"></div>
+        <div><input type="submit" class="btn btn-inverse" value="<spring:message code="login.login-button"/>" name="submit"></div>
 	   </form>
       </div>
    
 	<div class="span4 well">
-		<h2>Log in with Kerberos</h2>
-		<div><a href="kerberos_login" class="btn btn-inverse">Use Existing Kerberos Tickets</a></div>
+		<h2><spring:message code="login.use_kerberos"/></h2>
+		<div><a href="kerberos_login" class="btn btn-inverse"><spring:message code="login.kerberos_button"/></a></div>
 	</div>
 
 	<div class="span4 well">
-		<h2>Log in with Certificate</h2>
-		<div><a href="cert_login" class="btn btn-inverse">Use MIT Certificate</a></div>
+		<h2><spring:message code="login.use_cert"/></h2>
+		<div><a href="cert_login" class="btn btn-inverse"><spring:message code="login.cert_button"/></a></div>
 	</div>
 
 </div>
