@@ -15,7 +15,7 @@
 
 	<import resource="file:/etc/mitreid-connect/admins.xml" />
 
-	<import resource="file:/etc/mitried-connect/user-auth-context.xml" />
+	<import resource="file:/etc/mitreid-connect/user-auth-context.xml" />
 
 	<security:authentication-manager id="authenticationManager">
 		<security:authentication-provider ref="kerberosAuthenticationProvider" />
