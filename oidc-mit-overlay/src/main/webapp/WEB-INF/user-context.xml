@@ -113,7 +113,7 @@
 	<!-- X509 Login -->
 
 	<security:http pattern="/cert_login**" use-expressions="true">
-		<security:x509 subject-principal-regex="(?:^|,)EMAILADDRESS=(.+x@CSAIL.MIT.EDU)(?:.*)" user-service-ref="certUserService" />
+		<security:x509 subject-principal-regex="(?:^|,)EMAILADDRESS=(.+@CSAIL.MIT.EDU)(?:.*)" user-service-ref="certUserService" />
 	</security:http>
 
 	<!-- <bean class="org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter" 
