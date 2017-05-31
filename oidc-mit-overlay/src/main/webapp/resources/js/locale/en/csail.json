@@ -9,5 +9,69 @@
 		"kerberos_button": "Use Existing Kerberos Tickets",
 		"use_cert": "Log in with Certificate",
 		"cert_button": "Use CSAIL Certificate"		
+	},
+
+        "home": {
+    	"title": "Home",
+    	"welcome": {
+    		"title": "CSAIL OpenID Connect Service",
+			"body": "\nOpenID Connect is an internet-scale federated identity protocol built on top of the OAuth2 authorization framework. \nOpenID Connect lets you log into a remote site using your identity without exposing your credentials, like a username and password.</p>\n<p><a class=\"btn btn-primary btn-large\" href=\"https://tig.csail.mit.edu/wiki/TIG/OIDC\">Learn more &raquo;</a>"
+		},
+		"more": "More",
+		"about": {
+			"title": "About",
+			"body": "This OpenID Connect service is built from the MITREid Connect Open Source project, from \n<a href=\"http://www.mitre.org/\">The MITRE Corporation</a> and the <a href=\"http://www.trust.mit.edu/\">MIT Internet Trust Consortium</a>."
+		},
+		"contact": {
+			"title": "Contact",
+			"body": "\nFor more information or support, contact TIG.</p>\n<p><a class=\"btn\" href=\"mailto:help@csail.mit.edu?Subject=OpenID Connect\">Email &raquo;</a>"
+		},
+		"statistics": {
+			"title": "Current Statistics",
+			"loading": "Loading...",
+			"number_users": "Number of users: <span class=\"label label-info\" id=\"userCount\">{0}</span>",
+			"number_clients": "Authorized clients: <span class=\"label label-info\" id=\"clientCount\">{0}</span>",
+			"number_approvals": "Approved sites: <span class=\"label label-info\" id=\"approvalCount\">{0}</span>"
+		}
+	},
+	"contact": {
+		"title": "Contact",
+		"body": "To report bugs with the MITREid Connect software itself, use the \n<a href=\"https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server/issues\">GitHub issue tracker</a>. \nFor problems relating to this server, contact the server's administrator."
+	},
+	"topbar": {
+		"about": "About",
+		"contact": "Contact",
+		"statistics": "Statistics",
+		"home": "Home",
+		"login": "Log in",
+		"logout": "Log out"
+	},
+	"sidebar": {
+		"administrative": {
+			"title": "Administrative",
+			"manage_clients": "Manage Clients",
+			"whitelisted_clients": "Whitelisted Clients",
+			"blacklisted_clients": "Blacklisted Clients",
+			"system_scopes": "System Scopes"
+		},
+		"personal": {
+			"title": "Personal",
+			"approved_sites": "Manage Approved Sites",
+			"active_tokens": "Manage Active Tokens",
+			"profile_information": "View Profile Information"
+		},
+		"developer": {
+			"title": "Developer",
+			"client_registration": "Self-service client registration",
+			"resource_registration": "Self-service protected resource registration"
+		}
+	},
+	"manage": {
+		"ok": "OK",
+		"loading": "Loading",
+		"title": "Management Console"
 	}
+
+
+  
 }
