@@ -34,6 +34,7 @@
 	<bean id="statusEndpoint" class="edu.mit.oidc.web.StatusEndpoint">
 		<property name="ldapTemplate" ref="ldapTemplate" /> <!-- defined in user-context.xml -->
 		<property name="testUsername" ref="testUser" />
+		<property name="ticketValidator" ref="ticketValidator" /> <!-- defined in user-context.xml -->
 	</bean>
 
 	<security:http pattern="/#{T(edu.mit.oidc.web.StatusEndpoint).URL}/**" use-expressions="true" entry-point-ref="http403EntryPoint" create-session="stateless">

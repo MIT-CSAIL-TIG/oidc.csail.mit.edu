@@ -39,13 +39,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
+import org.springframework.security.kerberos.authentication.KerberosTicketValidation;
+import org.springframework.security.kerberos.authentication.KerberosTicketValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -63,14 +67,20 @@ public class StatusEndpoint {
 	
 	private static Logger logger = LoggerFactory.getLogger(StatusEndpoint.class);
 
+	// used to test database connectivity
 	@Autowired
 	public JpaOAuth2ClientRepository clientRepository;
 	
+	// used to test ldap connectivity
 	private LdapTemplate ldapTemplate;
 
+	// used to look up ldap record
 	private String testUsername;
 	
-	@RequestMapping("/" + URL)
+	// used to call kerberos connectivity
+	private KerberosTicketValidator ticketValidator;
+	
+	@RequestMapping(value = "/" + URL, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getStatus(Model m) {
 		
 		Map<String, Map<String, Object>> e = new HashMap<>();
@@ -153,8 +163,23 @@ public class StatusEndpoint {
 	private Map<String, Map<String, Object>> getKerbStatus() {
 		Map<String, Object> status = new HashMap<>();
 		
-		status.put("success", false);
-		status.put("error", "Kerberos not called");
+		try {
+
+			
+			/*
+			byte[] token;
+			KerberosTicketValidation ticket = ticketValidator.validateTicket(token);
+			
+			status.put("success", true);
+			status.put("ticketValidation", ticket.username());
+			*/
+			
+			throw new NoSuchMethodException("Kerberos test not implemented.");
+			
+		} catch (Exception e) {
+			status.put("success", false);
+			status.put("error", e.getMessage());
+		}
 		
 		return ImmutableMap.of("kerberos", status);
 	}
