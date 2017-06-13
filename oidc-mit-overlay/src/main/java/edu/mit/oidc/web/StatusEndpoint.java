@@ -27,6 +27,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+
 import org.mitre.oauth2.model.ClientDetailsEntity;
 import org.mitre.oauth2.repository.impl.JpaOAuth2ClientRepository;
 import org.mitre.openid.connect.view.HttpCodeView;
@@ -36,6 +39,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.filter.EqualsFilter;
+import org.springframework.ldap.filter.Filter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +65,10 @@ public class StatusEndpoint {
 
 	@Autowired
 	public JpaOAuth2ClientRepository clientRepository;
+	
+	private LdapTemplate ldapTemplate;
+
+	private String testUsername;
 	
 	@RequestMapping("/" + URL)
 	public String getStatus(Model m) {
@@ -114,8 +125,22 @@ public class StatusEndpoint {
 	private Map<String, Map<String, Object>> getLdapStatus() {
 		Map<String, Object> status = new HashMap<>();
 		
-		status.put("success", false);
-		status.put("error", "LDAP not called");
+		try {
+			Filter find = new EqualsFilter("uid", getTestUsername());
+
+			List<String> searchResults = ldapTemplate.search("", find.encode(), new AttributesMapper<String>() {
+
+				@Override
+				public String mapFromAttributes(Attributes attrs) throws NamingException {
+					return attrs.get("uid").get().toString();
+				}
+			});
+			status.put("success", true);
+			status.put("users", searchResults);
+		} catch (Exception e) {
+			status.put("success", false);
+			status.put("error", e.getMessage());
+		}
 		
 		return ImmutableMap.of("ldap", status);
 	}
@@ -153,6 +178,34 @@ public class StatusEndpoint {
 		}
 		
 		return ImmutableMap.of("database", status);
+	}
+
+	/**
+	 * @return the ldapTemplate
+	 */
+	public LdapTemplate getLdapTemplate() {
+		return ldapTemplate;
+	}
+
+	/**
+	 * @param ldapTemplate the ldapTemplate to set
+	 */
+	public void setLdapTemplate(LdapTemplate ldapTemplate) {
+		this.ldapTemplate = ldapTemplate;
+	}
+
+	/**
+	 * @return the testUsername
+	 */
+	public String getTestUsername() {
+		return testUsername;
+	}
+
+	/**
+	 * @param testUsername the testUsername to set
+	 */
+	public void setTestUsername(String testUsername) {
+		this.testUsername = testUsername;
 	}
 	
 	
