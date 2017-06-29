@@ -16,6 +16,7 @@
 
 package edu.mit.oidc.web;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,9 +27,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
+import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.mitre.oauth2.model.ClientDetailsEntity;
 import org.mitre.oauth2.repository.impl.JpaOAuth2ClientRepository;
@@ -44,14 +50,13 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
-import org.springframework.security.kerberos.authentication.KerberosTicketValidation;
-import org.springframework.security.kerberos.authentication.KerberosTicketValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.collect.ImmutableMap;
+import com.sun.security.auth.module.Krb5LoginModule;
 
 /**
  * 
@@ -77,8 +82,14 @@ public class StatusEndpoint {
 	// used to look up ldap record
 	private String testUsername;
 	
-	// used to call kerberos connectivity
-	private KerberosTicketValidator ticketValidator;
+	// controls how long to let tasks run before giving up
+	private int timeoutSeconds = 10;
+	
+	// keyTab file for Kerberos test
+	private String keyTab;
+	
+	// principal for Kerberos test
+	private String principal;
 	
 	@RequestMapping(value = "/" + URL, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String getStatus(Model m) {
@@ -107,7 +118,7 @@ public class StatusEndpoint {
 						public Map<String, Map<String, Object>> call() throws Exception {
 							return getLdapStatus();
 						}
-					}));
+					}), getTimeoutSeconds(), TimeUnit.SECONDS);
 
 			// collect all the results and return them
 			for (Future<Map<String, Map<String, Object>>> result: results) {
@@ -165,16 +176,32 @@ public class StatusEndpoint {
 		
 		try {
 
+			Krb5LoginModule krb = new Krb5LoginModule();
 			
-			/*
-			byte[] token;
-			KerberosTicketValidation ticket = ticketValidator.validateTicket(token);
+			Subject subject = new Subject();
+			CallbackHandler callbackHandler = new CallbackHandler() {
+				@Override
+				public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+					// ignore everything
+				}
+			};
+			Map<String, Object> sharedState = ImmutableMap.of();
+			Map<String, Object> options = new ImmutableMap.Builder()
+					.put("refreshKrb5Config", true)
+					.put("useTicketCache", false)
+					.put("doNotPrompt", true)
+					.put("useKeyTab", true)
+					.put("keyTab", getKeyTab())
+					.put("storeKey", false)
+					.put("principal", getPrincipal())
+					.put("isInitiator", true)
+					.build();
 			
-			status.put("success", true);
-			status.put("ticketValidation", ticket.username());
-			*/
+			krb.initialize(subject, callbackHandler, sharedState, options);
 			
-			throw new NoSuchMethodException("Kerberos test not implemented.");
+			boolean login = krb.login();
+			status.put("success", login);
+			status.put("subject", subject.getPrincipals());
 			
 		} catch (Exception e) {
 			status.put("success", false);
@@ -231,6 +258,48 @@ public class StatusEndpoint {
 	 */
 	public void setTestUsername(String testUsername) {
 		this.testUsername = testUsername;
+	}
+
+	/**
+	 * @return the timeoutSeconds
+	 */
+	public int getTimeoutSeconds() {
+		return timeoutSeconds;
+	}
+
+	/**
+	 * @param timeoutSeconds the timeoutSeconds to set
+	 */
+	public void setTimeoutSeconds(int timeoutSeconds) {
+		this.timeoutSeconds = timeoutSeconds;
+	}
+
+	/**
+	 * @return the keyTab
+	 */
+	public String getKeyTab() {
+		return keyTab;
+	}
+
+	/**
+	 * @param keyTab the keyTab to set
+	 */
+	public void setKeyTab(String keyTab) {
+		this.keyTab = keyTab;
+	}
+
+	/**
+	 * @return the principal
+	 */
+	public String getPrincipal() {
+		return principal;
+	}
+
+	/**
+	 * @param principal the principal to set
+	 */
+	public void setPrincipal(String principal) {
+		this.principal = principal;
 	}
 	
 	

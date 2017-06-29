@@ -33,8 +33,10 @@
 
 	<bean id="statusEndpoint" class="edu.mit.oidc.web.StatusEndpoint">
 		<property name="ldapTemplate" ref="ldapTemplate" /> <!-- defined in user-context.xml -->
-		<property name="testUsername" ref="testUser" />
-		<property name="ticketValidator" ref="ticketValidator" /> <!-- defined in user-context.xml -->
+		<property name="testUsername" value="testUser" />
+		<property name="timeoutSeconds" value="10" />
+		<property name="keyTab" value="file:/etc/oidc.keytab" />
+		<property name="principal" value="HTTP/oidc-dev.csail.mit.edu@CSAIL.MIT.EDU" />
 	</bean>
 
 	<security:http pattern="/#{T(edu.mit.oidc.web.StatusEndpoint).URL}/**" use-expressions="true" entry-point-ref="http403EntryPoint" create-session="stateless">
