@@ -187,14 +187,14 @@ public class StatusEndpoint {
 			};
 			Map<String, Object> sharedState = ImmutableMap.of();
 			Map<String, Object> options = new ImmutableMap.Builder()
-					.put("refreshKrb5Config", true)
-					.put("useTicketCache", false)
-					.put("doNotPrompt", true)
-					.put("useKeyTab", true)
+					.put("refreshKrb5Config", "true")
+					.put("useTicketCache", "false")
+					.put("doNotPrompt", "true")
+					.put("useKeyTab", "true")
 					.put("keyTab", getKeyTab())
-					.put("storeKey", false)
+					.put("storeKey", "false")
 					.put("principal", getPrincipal())
-					.put("isInitiator", true)
+					.put("isInitiator", "true")
 					.build();
 			
 			krb.initialize(subject, callbackHandler, sharedState, options);
