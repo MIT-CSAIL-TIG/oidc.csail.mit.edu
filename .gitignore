@@ -11,3 +11,4 @@ bin
 deploy.tar.gz
 mitre-openid-connect/conf/mitre-config.log
 
+.springBeans
