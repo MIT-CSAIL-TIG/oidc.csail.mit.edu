@@ -44,7 +44,7 @@ $(document).ready(function() {
 
 
 <div class="row-fluid">
-      <div class="span4 well">
+      <div class="span6 well">
        <h2><spring:message code="login.login_with_username_and_password"/></h2>
 	   <form action="<%=request.getContextPath()%>/login" method="POST">
 	   	<div>
@@ -65,19 +65,9 @@ $(document).ready(function() {
 	   </form>
       </div>
    
-	<div class="span4 well">
+	<div class="span6 well">
 		<h2><spring:message code="login.use_kerberos"/></h2>
 		<div><a href="kerberos_login" class="btn btn-inverse"><spring:message code="login.kerberos_button"/></a></div>
-	</div>
-	<div class="span4 well">
-		<h2>What is this page?</h2>
-		<p>As  of July 1, 2018, CSAIL no longer uses client-side web certificates for authentication to web applications and sites. 
-		This page is the new login page for CSAIL's OIDC (OpenID Connect) service. To log in, you can just type in your CSAIL
-		username and password in the first panel on this screen (easy). You can also use existing CSAIL Kerberos tickets (advanced).
-		You can find out more at <a href="http://tig.csail.mit.edu/accounts-authentication/oidc/">the TIG OIDC introduction.</a> As always,
-		if you get stuck and need help, please send email to <a href="mailto:help@csail.mit.edu">help@csail.mit.edu</a>.
-		</p>   
-
 	</div>
 
 
