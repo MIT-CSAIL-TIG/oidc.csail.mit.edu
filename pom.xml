@@ -4,7 +4,7 @@
 	<groupId>edu.mit.oidc</groupId>
 	<artifactId>openid-connect-overlay-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.3.3</version>
+	<version>1.3.4</version>
 	<name>MIT OIDC server overlay parent</name>
 
 	<modules>
@@ -26,6 +26,28 @@
 				<version>${mitreid-version}</version>
 				<scope>import</scope>
 			</dependency>
+            <!--- JAXB is missing from Java 9, or so I'm told -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>2.3.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>2.3.3</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -39,7 +61,7 @@
 
 	<properties>
 		<java-version>1.8</java-version>
-		<mitreid-version>1.3.3</mitreid-version>
+		<mitreid-version>1.3.4</mitreid-version>
 	</properties>
 
 	<build>
