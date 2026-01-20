@@ -24,7 +24,7 @@
 		},
 		"contact": {
 			"title": "Contact",
-			"body": "\nFor more information or support, contact TIG.</p>\n<p><a class=\"btn\" href=\"mailto:help@csail.mit.edu?Subject=OpenID Connect\">Email &raquo;</a>"
+			"body": "\nFor more information or support, send mail to help@csail.mit.edu."
 		},
 		"statistics": {
 			"title": "Current Statistics",
